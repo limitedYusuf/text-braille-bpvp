@@ -21,9 +21,11 @@
          <button @click="convertText" class="bg-blue-500 text-white px-4 py-2 rounded mb-4">Mari kita coba...</button>
 
          <div v-if="brailleText">
-            <p class="font-semibold">Braille:</p>
-            <div class="text-2xl">
-               <div v-html="brailleText" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2">
+            <p class="font-semibold mb-3">...SURPRISEE...</p>
+            <div class="grid grid-cols-12 gap-4">
+               <div v-for="(brailleChar, index) in brailleText" :key="index"
+                  class="bg-gray-800 rounded p-4 text-center text-2xl dark:bg-gray-700">
+                  {{ brailleChar }}
                </div>
             </div>
          </div>
@@ -59,7 +61,7 @@
          new Vue({
             el: '#app',
             data: {
-               inputText: '',
+               inputText: 'Aku & kamu 90',
                brailleText: ''
             },
             methods: {
@@ -82,11 +84,11 @@
 
                   function translate(input) {
                      const characters = input.split('');
-                     let result = '';
+                     let result = [];
                      for (const char of characters) {
-                        result += charToBraille(char) + ' ';
+                        result.push(charToBraille(char));
                      }
-                     return result.trim();
+                     return result;
                   }
 
                   this.brailleText = translate(this.inputText);
