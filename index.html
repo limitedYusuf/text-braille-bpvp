@@ -47,7 +47,8 @@
             punctuation: {
                ',': '⠲', ';': '⠆⠖⠆', ':': '⠆⠆⠆', '.': '⠲', '!': '⠖', '(': '⠘', ')': '⠘⠆', '“': '⠘⠸', '”': '⠘⠸',
                '?': '⠈⠻', '/': '⠘⠤⠇', '#': '⠼⠼', '\'': '⠄', '…': '⠤⠤⠤', '’': '⠄', '­': '⠤⠤', '-': '⠤⠤', '‐': '⠤⠤',
-               '‑': '⠤⠤', '‒': '⠤⠤', '–': '⠤⠤', '—': '⠤⠤', '―': '⠤⠤'
+               '‑': '⠤⠤', '‒': '⠤⠤', '–': '⠤⠤', '—': '⠤⠤', '―': '⠤⠤',
+               '&': '⠈⠛⠎', '%': '⠨⠴', '$': '⠤⠎⠞', '@': '⠈⠹', '*': '⠈⠻'
             },
             numbers: { '1': '⠂', '2': '⠆', '3': '⠒', '4': '⠲', '5': '⠤', '6': '⠖', '7': '⠶', '8': '⠦', '9': '⠔', '0': '⠶⠂' },
             CAPITAL: '⠠',
@@ -64,26 +65,26 @@
             methods: {
                convertText() {
                   function charToBraille(char) {
-                     if (char in template.letters) {
-                        return template.letters[char];
+                     if (char.toLowerCase() in template.letters) {
+                        return template.letters[char.toLowerCase()];
+                     } else if (char.toLowerCase() in template.contractions) {
+                        return template.contractions[char.toLowerCase()];
+                     } else if (char in template.punctuation) {
+                        return template.punctuation[char];
+                     } else if (char in template.numbers) {
+                        return template.numbers[char];
+                     } else if (char === ' ') {
+                        return ' ';
                      } else {
                         return template.UNRECOGNIZED;
                      }
                   }
 
-                  function wordToBraille(word) {
-                     let braille = '';
-                     for (let i = 0; i < word.length; i++) {
-                        braille += charToBraille(word[i]);
-                     }
-                     return braille;
-                  }
-
                   function translate(input) {
-                     const words = input.toLowerCase().split(/\s+/);
+                     const characters = input.split('');
                      let result = '';
-                     for (const word of words) {
-                        result += wordToBraille(word) + ' ';
+                     for (const char of characters) {
+                        result += charToBraille(char) + ' ';
                      }
                      return result.trim();
                   }
